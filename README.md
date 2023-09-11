@@ -1,1 +1,2 @@
-# homelab-terraform
+# Terraform Project - Homelab
+

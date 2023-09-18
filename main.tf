@@ -18,3 +18,7 @@ module "metallb" {
   source = "./applications/metallb"
 }
 
+module "vaultwarden" {
+  source = "./applications/vaultwarden"
+}
+

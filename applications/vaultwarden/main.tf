@@ -35,6 +35,11 @@ resource "kubernetes_deployment" "main" {
           image = "vaultwarden/server"
           name  = "vaultwarden"
 
+          env {
+            name  = "ADMIN_TOKEN"
+            value = data.aws_ssm_parameter.main.value
+          }
+
           port {
             container_port = 80
             protocol       = "TCP"
@@ -62,7 +67,7 @@ resource "kubernetes_deployment" "main" {
 
 resource "kubernetes_persistent_volume_claim" "main" {
   metadata {
-    name      = "vaultwarden-volume-claim"
+    name      = "vaultwarden-persistent-volume-claim"
     namespace = kubernetes_namespace.main.id
   }
 
@@ -97,9 +102,9 @@ resource "kubernetes_service" "main" {
   }
 }
 
-resource "kubernetes_ingress_v1" "example_ingress" {
+resource "kubernetes_ingress_v1" "main" {
   metadata {
-    name      = "vaultwarden"
+    name      = "vaultwarden-ingress"
     namespace = kubernetes_namespace.main.id
     annotations = {
       "cert-manager.io/cluster-issuer" = "letsencrypt-prod"
@@ -134,5 +139,9 @@ resource "kubernetes_ingress_v1" "example_ingress" {
       secret_name = "vaultwarden-tls-secret"
     }
   }
+}
+
+data "aws_ssm_parameter" "main" {
+  name = var.token_path
 }
 

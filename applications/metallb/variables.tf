@@ -1,6 +1,6 @@
 variable "namespace" {
   type    = string
-  default = "metallb-system"
+  default = "metallb"
 }
 
 variable "addresses" {

@@ -18,6 +18,10 @@ module "metallb" {
   source = "./applications/metallb"
 }
 
+module "photoprism" {
+  source = "./applications/photoprism"
+}
+
 module "vaultwarden" {
   source = "./applications/vaultwarden"
 }

@@ -76,7 +76,7 @@ resource "kubernetes_persistent_volume_claim" "main" {
 
     resources {
       requests = {
-        storage = var.storage_capacity
+        storage = var.volume_capacity
       }
     }
 

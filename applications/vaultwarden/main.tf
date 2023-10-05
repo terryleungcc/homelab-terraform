@@ -76,11 +76,11 @@ resource "kubernetes_persistent_volume_claim" "main" {
 
     resources {
       requests = {
-        storage = "8Gi"
+        storage = var.storage_capacity
       }
     }
 
-    storage_class_name = "storage-class-nfs"
+    storage_class_name = "standard"
   }
 }
 

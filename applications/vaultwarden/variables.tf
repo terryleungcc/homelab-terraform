@@ -8,3 +8,7 @@ variable "token_path" {
   default = "/vaultwarden/admin/token"
 }
 
+variable "storage_capacity" {
+  type    = string
+  default = "8Gi"
+}

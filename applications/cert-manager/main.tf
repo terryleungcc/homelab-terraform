@@ -12,7 +12,7 @@ resource "helm_release" "main" {
   }
 }
 
-resource "kubernetes_manifest" "main" {
+resource "kubernetes_manifest" "cluster_issuer_prod" {
   count = 1 # To disable manifest creation on first run to prevent typing issue
 
   manifest = {
@@ -30,6 +30,40 @@ resource "kubernetes_manifest" "main" {
 
         privateKeySecretRef = {
           name = "letsencrypt-prod"
+        }
+
+        solvers = [
+          {
+            http01 = {
+              ingress = {
+                ingressClassName = "nginx"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+
+resource "kubernetes_manifest" "cluster_issuer_staging" {
+  count = 1 # To disable manifest creation on first run to prevent typing issue
+
+  manifest = {
+    apiVersion = "cert-manager.io/v1"
+    kind       = "ClusterIssuer"
+
+    metadata = {
+      name = "letsencrypt-staging"
+    }
+
+    spec = {
+      acme = {
+        server = "https://acme-staging-v02.api.letsencrypt.org/directory"
+        email  = "terry.leung.cc@proton.me"
+
+        privateKeySecretRef = {
+          name = "letsencrypt-staging"
         }
 
         solvers = [

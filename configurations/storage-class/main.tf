@@ -11,16 +11,18 @@ resource "helm_release" "main" {
   }
 }
 
-resource "kubernetes_storage_class" "main" {
+resource "kubernetes_storage_class" "standard" {
   metadata {
-    name = "storage-class-nfs"
+    name = "standard"
   }
 
   storage_provisioner = "nfs.csi.k8s.io"
 
   parameters = {
-    server = "192.168.1.4"
-    share  = "/volume"
+    server   = "192.168.1.4"
+    share    = "/volume"
+    subDir   = "$${pvc.metadata.name}"
+    onDelete = "retain"
   }
 
   reclaim_policy      = "Retain"
@@ -33,3 +35,26 @@ resource "kubernetes_storage_class" "main" {
   ]
 }
 
+resource "kubernetes_storage_class" "temporary" {
+  metadata {
+    name = "temporary"
+  }
+
+  storage_provisioner = "nfs.csi.k8s.io"
+
+  parameters = {
+    server   = "192.168.1.4"
+    share    = "/volume"
+    subDir   = "$${pvc.metadata.name}"
+    onDelete = "delete"
+  }
+
+  reclaim_policy      = "Delete"
+  volume_binding_mode = "Immediate"
+
+  mount_options = ["nfsvers=4.1"]
+
+  depends_on = [
+    helm_release.main
+  ]
+}

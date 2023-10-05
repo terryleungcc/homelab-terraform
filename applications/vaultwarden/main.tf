@@ -67,7 +67,7 @@ resource "kubernetes_deployment" "main" {
 
 resource "kubernetes_persistent_volume_claim" "main" {
   metadata {
-    name      = "vaultwarden-persistent-volume-claim"
+    name      = "vaultwarden-data-volume"
     namespace = kubernetes_namespace.main.id
   }
 

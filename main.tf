@@ -1,25 +1,26 @@
-# Configure cluser
+# Cluser configurations
 
 module "storage-class" {
-  source = "./configurations/storage-class"
+  source = "./cluster/config/storage-class"
 }
 
-# Deploy applications
+# Cluster applications
 
 module "cert-manager" {
-  source = "./applications/cert-manager"
+  source = "./cluster/app/cert-manager"
 }
 
 module "ingress-nginx" {
-  source = "./applications/ingress-nginx"
+  source = "./cluster/app/ingress-nginx"
 }
 
 module "metallb" {
-  source = "./applications/metallb"
+  source = "./cluster/app/metallb"
 }
 
+# User applications
 
 module "vaultwarden" {
-  source = "./applications/vaultwarden"
+  source = "./user/app/vaultwarden"
 }
 
